@@ -1,7 +1,7 @@
 riemann_wrapper: time functions with riemann
 ============================================
 
-Introductory blog post: 
+Introductory blog post: http://www.spootnik.org/entries/2013/05/21_using-riemann-to-monitor-python-apps.html
 
 This library is provided to allow timing and exception reporting
 of python functions using http://riemann.io.
