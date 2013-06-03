@@ -10,14 +10,16 @@ def riemann_wrapper(client=bernhard.Client(),
     """Yield a riemann wrapper with default values for
     the bernhard client, host and prefix"""
 
+    global_client = client
+    global_host = host
+
     def wrap_riemann(metric,
-                     client=client,
-                     host=host,
+                     client=global_client,
+                     host=global_host,
                      tags=[]):
 
         tags = global_tags + tags
 
-        print("host: " + str(host))
         def riemann_decorator(f):
             @wraps(f)
             def decorated_function(*args, **kwargs):
