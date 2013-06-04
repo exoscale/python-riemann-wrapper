@@ -35,19 +35,22 @@ def riemann_wrapper(client=bernhard.Client(),
                 try:
                     response = f(*args, **kwargs)
                 except Exception as e:
-                    client.send({'host': hostname,
-                                 'service': metric_name + "-exceptions",
-                                 'description': str(e),
-                                 'tags': tags + ['exception'],
-                                 'state': 'critical',
-                                 'metric': 1})
+
+                    if client:
+                        client.send({'host': hostname,
+                                     'service': metric_name + "-exceptions",
+                                     'description': str(e),
+                                     'tags': tags + ['exception'],
+                                     'state': 'critical',
+                                     'metric': 1})
                     raise
 
                 duration = (time.time() - started) * 1000
-                client.send({'host': hostname,
-                             'service': metric_name + "-time",
-                             'tags': tags + ['duration'],
-                             'metric': duration})
+                if client:
+                    client.send({'host': hostname,
+                                 'service': metric_name + "-time",
+                                 'tags': tags + ['duration'],
+                                 'metric': duration})
                 return response
             return decorated_function
         return riemann_decorator
