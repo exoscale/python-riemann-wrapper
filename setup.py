@@ -7,7 +7,7 @@ def read(*parts):
                        encoding="utf-8").read()
 
 setup(name='riemann_wrapper',
-      version='0.5.4',
+      version='0.5.6',
       description='send timing and exception stats to riemann',
       long_description=read('README.rst'),
       url='https://github.com/exoscale/python-riemann-wrapper',

@@ -4,7 +4,8 @@ import bernhard
 from functools import wraps
 
 def riemann_wrapper(client=bernhard.Client(),
-                    prefix="",
+                    prefix="python",
+                    sep=".",
                     host=None,
                     global_tags=['python']):
     """Yield a riemann wrapper with default values for
@@ -30,7 +31,7 @@ def riemann_wrapper(client=bernhard.Client(),
                     hostname = socket.gethostname()
 
                 started = time.time()
-                metric_name = prefix + metric
+                metric_name = prefix + sep + metric
 
                 try:
                     response = f(*args, **kwargs)
@@ -41,6 +42,7 @@ def riemann_wrapper(client=bernhard.Client(),
                                      'service': metric_name + "-exceptions",
                                      'description': str(e),
                                      'tags': tags + ['exception'],
+                                     'attributes': {'prefix': prefix},
                                      'state': 'critical',
                                      'metric': 1})
                     raise
@@ -49,6 +51,7 @@ def riemann_wrapper(client=bernhard.Client(),
                 if client:
                     client.send({'host': hostname,
                                  'service': metric_name + "-time",
+                                 'attributes': {'prefix': prefix},
                                  'tags': tags + ['duration'],
                                  'metric': duration})
                 return response
