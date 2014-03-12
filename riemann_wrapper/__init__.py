@@ -43,7 +43,7 @@ def riemann_wrapper(client=bernhard.Client(),
                                      'description': str(e),
                                      'tags': tags + ['exception'],
                                      'attributes': {'prefix': prefix},
-                                     'state': 'critical',
+                                     'state': 'warning',
                                      'metric': 1})
                     raise
 
