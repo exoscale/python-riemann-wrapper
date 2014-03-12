@@ -3,10 +3,12 @@ import socket
 import bernhard
 from functools import wraps
 
+
 def riemann_wrapper(client=bernhard.Client(),
                     prefix="python",
                     sep=".",
                     host=None,
+                    exception_state='warning',
                     global_tags=['python']):
     """Yield a riemann wrapper with default values for
     the bernhard client, host and prefix"""
@@ -43,7 +45,7 @@ def riemann_wrapper(client=bernhard.Client(),
                                      'description': str(e),
                                      'tags': tags + ['exception'],
                                      'attributes': {'prefix': prefix},
-                                     'state': 'warning',
+                                     'state': exception_state,
                                      'metric': 1})
                     raise
 
@@ -58,7 +60,7 @@ def riemann_wrapper(client=bernhard.Client(),
             return decorated_function
         return riemann_decorator
     return wrap_riemann
-    
 
-# default riemann wrapper                
+
+# default riemann wrapper
 wrap_riemann = riemann_wrapper()
