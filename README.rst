@@ -8,25 +8,21 @@ of python functions using http://riemann.io.
 
 Installing
 ----------
-Pip:
+Pip::
 
-    ``pip install riemann_wrapper``
+    pip install riemann_wrapper
 
-Pypi:
+Pypi: https://pypi.python.org/pypi/riemann_wrapper
 
-   https://pypi.python.org/pypi/riemann_wrapper
+Manual::
 
-Manual:
-
-    ``python setup.py install``
+    python setup.py install
 
 Usage
 -----
 
 
-Provide a metric name and a bernhard client for timing:
-
-::
+Provide a metric name and a bernhard client for timing::
 
     import bernhard
     from riemann_wrapper import wrap_rieman, riemann_wrapper
@@ -36,8 +32,6 @@ Provide a metric name and a bernhard client for timing:
     @wrap_riemann("cpu-intensive-task", client=riemann)
     def do_something_cpu_intensive():
        # [...]
-
-::        
 
 Call options:
 -------------
@@ -49,9 +43,7 @@ The following keyword args may be passed to ``wrap_riemann``:
 * ``host``: override hostname for the event
 
 Alternately, a new wrapping function can be created by calling
-``riemann_wrapper`` like-so:
-
-::
+``riemann_wrapper`` like-so::
 
     import bernhard
     from riemann_wrapper import wrap_riemann, riemann_wrapper
@@ -63,13 +55,10 @@ Alternately, a new wrapping function can be created by calling
     def do_something_cpu_intensive():
        # [...]
 
-::
- 
 The following keyword args may be passed to ``riemann_wrapper``:
 
 * ``client``: instance of ``bernhard.Client`` to send events with
 * ``global_tags``: tags present in all sent events
 * ``host``: override hostname for all events
 * ``prefix``: prepend given string to all event services
-
-
+* ``exception_state``: state sent for exceptions. Default: ``'warning'``.
