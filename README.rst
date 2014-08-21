@@ -58,7 +58,10 @@ Alternately, a new wrapping function can be created by calling
 The following keyword args may be passed to ``riemann_wrapper``:
 
 * ``client``: instance of ``bernhard.Client`` to send events with
-* ``global_tags``: tags present in all sent events
-* ``host``: override hostname for all events
-* ``prefix``: prepend given string to all event services
+* ``global_tags``: tags present in all sent events. Default: ``['python']``.
+* ``host``: override hostname for all events. Default: ``None``.
+* ``prefix``: prepend given string to all event services. Default: ``python``.
 * ``exception_state``: state sent for exceptions. Default: ``'warning'``.
+* ``send_exceptions``: boolean or callable that takes an exceptions as a
+  parameter and returns a boolean to specify whether to send that particular
+  exception to riemann. Default: True.

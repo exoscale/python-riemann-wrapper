@@ -9,6 +9,7 @@ def riemann_wrapper(client=bernhard.Client(),
                     sep=".",
                     host=None,
                     exception_state='warning',
+                    send_exceptions=True,
                     global_tags=['python']):
     """Yield a riemann wrapper with default values for
     the bernhard client, host and prefix"""
@@ -39,7 +40,10 @@ def riemann_wrapper(client=bernhard.Client(),
                     response = f(*args, **kwargs)
                 except Exception as e:
 
-                    if client:
+                    if client and send_exceptions:
+                        if callable(send_exceptions):
+                            if not send_exceptions(e):
+                                raise
                         client.send({'host': hostname,
                                      'service': metric_name + "-exceptions",
                                      'description': str(e),
