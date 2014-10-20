@@ -24,6 +24,9 @@ def riemann_wrapper(client=bernhard.Client(),
 
         tags = global_tags + tags
 
+        def send(event):
+            client.send(event)
+
         def riemann_decorator(f):
             @wraps(f)
             def decorated_function(*args, **kwargs):
@@ -41,22 +44,22 @@ def riemann_wrapper(client=bernhard.Client(),
                 except Exception as e:
 
                     if client and _call_if_callable(send_exceptions):
-                        client.send({'host': hostname,
-                                     'service': metric_name + "-exceptions",
-                                     'description': str(e),
-                                     'tags': tags + ['exception'],
-                                     'attributes': {'prefix': prefix},
-                                     'state': exception_state,
-                                     'metric': 1})
+                        send({'host': hostname,
+                              'service': metric_name + "-exceptions",
+                              'description': str(e),
+                              'tags': tags + ['exception'],
+                              'attributes': {'prefix': prefix},
+                              'state': exception_state,
+                              'metric': 1})
                     raise
 
                 duration = (time.time() - started) * 1000
                 if client:
-                    client.send({'host': hostname,
-                                 'service': metric_name + "-time",
-                                 'attributes': {'prefix': prefix},
-                                 'tags': tags + ['duration'],
-                                 'metric': duration})
+                    send({'host': hostname,
+                          'service': metric_name + "-time",
+                          'attributes': {'prefix': prefix},
+                          'tags': tags + ['duration'],
+                          'metric': duration})
                 return response
             return decorated_function
         return riemann_decorator
