@@ -10,23 +10,31 @@ def riemann_wrapper(client=bernhard.Client(),
                     host=None,
                     exception_state='warning',
                     send_exceptions=True,
-                    global_tags=['python']):
+                    global_tags=['python'],
+                    logger=None):
     """Yield a riemann wrapper with default values for
     the bernhard client, host and prefix"""
 
     global_client = client
     global_host = host
+    global_logger = logger
 
     def wrap_riemann(metric,
                      client=global_client,
                      host=global_host,
-                     tags=[]):
+                     tags=[],
+                     logger=global_logger):
 
         tags = global_tags + tags
 
         def send(event):
             if client:
-                client.send(event)
+                try:
+                    client.send(event)
+                except bernhard.TransportError:
+                    log = _call_if_callable(logger)
+                    if log:
+                        log.exception('Failed to send Riemann event.')
 
         def riemann_decorator(f):
             @wraps(f)
