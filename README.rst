@@ -25,7 +25,7 @@ Usage
 Provide a metric name and a bernhard client for timing::
 
     import bernhard
-    from riemann_wrapper import wrap_rieman, riemann_wrapper
+    from riemann_wrapper import wrap_riemann, riemann_wrapper
 
     riemann = bernhard.Client()
 
