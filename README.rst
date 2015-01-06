@@ -41,6 +41,7 @@ The following keyword args may be passed to ``wrap_riemann``:
 * ``client``: instance of ``bernhard.Client`` to send events with
 * ``tags``: tags to attach to riemann events
 * ``host``: override hostname for the event
+* ``logger``: a standard python logger to which transport errors may be logged
 
 Alternately, a new wrapping function can be created by calling
 ``riemann_wrapper`` like-so::
@@ -60,6 +61,8 @@ The following keyword args may be passed to ``riemann_wrapper``:
 * ``client``: instance of ``bernhard.Client`` to send events with
 * ``global_tags``: tags present in all sent events. Default: ``['python']``.
 * ``host``: override hostname for all events. Default: ``None``.
+* ``logger``: a standard python logger to which transport errors may be logged.
+  Default: ``None``.
 * ``prefix``: prepend given string to all event services. Default: ``python``.
 * ``exception_state``: state sent for exceptions. Default: ``'warning'``.
 * ``send_exceptions``: boolean or callable that takes an exceptions as a
