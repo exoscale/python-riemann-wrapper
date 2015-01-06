@@ -25,7 +25,7 @@ Usage
 Provide a metric name and a bernhard client for timing::
 
     import bernhard
-    from riemann_wrapper import wrap_rieman, riemann_wrapper
+    from riemann_wrapper import wrap_riemann, riemann_wrapper
 
     riemann = bernhard.Client()
 
@@ -49,7 +49,7 @@ Alternately, a new wrapping function can be created by calling
     from riemann_wrapper import wrap_riemann, riemann_wrapper
 
     riemann = bernhard.Client()
-    my_wrapper = riemann_wrapper(client=berhard.Client(), prefix="myapp.")
+    my_wrapper = riemann_wrapper(client=bernhard.Client(), prefix="myapp.")
 
     @my_wrapper("cpu-intensive-task")
     def do_something_cpu_intensive():
