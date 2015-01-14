@@ -52,7 +52,7 @@ def riemann_wrapper(client=bernhard.Client(),
                     response = f(*args, **kwargs)
                 except Exception as e:
 
-                    if _call_if_callable(send_exceptions):
+                    if _call_if_callable(send_exceptions, e):
                         send({'host': hostname,
                               'service': metric_name + "-exceptions",
                               'description': str(e),
@@ -78,5 +78,5 @@ def riemann_wrapper(client=bernhard.Client(),
 wrap_riemann = riemann_wrapper()
 
 
-def _call_if_callable(x):
-    return x() if callable(x) else x
+def _call_if_callable(x, *args):
+    return x(*args) if callable(x) else x
