@@ -28,7 +28,7 @@ def riemann_wrapper(client=bernhard.Client(),
                      logger=global_logger):
 
         tags = global_tags + tags
-        attributes = dict(global_attributes.items() + attributes.items())
+        attributes = dict(list(global_attributes.items()) + list(attributes.items()))
         def send(event):
             if client:
                 try:
@@ -50,7 +50,7 @@ def riemann_wrapper(client=bernhard.Client(),
                 started = time.time()
                 metric_name = prefix + sep + metric
                 # Prefix takes precedence
-                all_attributes = dict(attributes.items() + ('prefix', prefix))
+                all_attributes = dict(list(attributes.items()) + [('prefix', prefix)])
                 try:
                     response = f(*args, **kwargs)
                 except Exception as e:
