@@ -11,6 +11,7 @@ def riemann_wrapper(client=bernhard.Client(),
                     exception_state='warning',
                     send_exceptions=True,
                     global_tags=['python'],
+                    global_attributes={},
                     logger=None):
     """Yield a riemann wrapper with default values for
     the bernhard client, host and prefix"""
@@ -23,10 +24,11 @@ def riemann_wrapper(client=bernhard.Client(),
                      client=global_client,
                      host=global_host,
                      tags=[],
+                     attributes={},
                      logger=global_logger):
 
         tags = global_tags + tags
-
+        attributes = dict(list(global_attributes.items()) + list(attributes.items()))
         def send(event):
             if client:
                 try:
@@ -47,7 +49,8 @@ def riemann_wrapper(client=bernhard.Client(),
 
                 started = time.time()
                 metric_name = prefix + sep + metric
-
+                # Prefix takes precedence
+                all_attributes = dict(list(attributes.items()) + [('prefix', prefix)])
                 try:
                     response = f(*args, **kwargs)
                 except Exception as e:
@@ -57,7 +60,7 @@ def riemann_wrapper(client=bernhard.Client(),
                               'service': metric_name + "-exceptions",
                               'description': str(e),
                               'tags': tags + ['exception'],
-                              'attributes': {'prefix': prefix},
+                              'attributes': all_attributes,
                               'state': exception_state,
                               'metric': 1})
                     raise
@@ -65,7 +68,7 @@ def riemann_wrapper(client=bernhard.Client(),
                 duration = (time.time() - started) * 1000
                 send({'host': hostname,
                       'service': metric_name + "-time",
-                      'attributes': {'prefix': prefix},
+                      'attributes': all_attributes,
                       'tags': tags + ['duration'],
                       'metric': duration})
                 return response
